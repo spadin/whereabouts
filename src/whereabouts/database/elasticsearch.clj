@@ -2,8 +2,14 @@
   (:require [clojurewerkz.elastisch.rest          :as esr]
             [clojurewerkz.elastisch.rest.document :as esd]))
 
+(def config-map
+  (read-string (slurp "src/whereabouts/environment/development/config.edn")))
+
+(defn- config-for [& k]
+  (get-in config-map k))
+
 (defn connect
-  ([] (connect "http://127.0.0.1:9200"))
+  ([] (connect (config-for :elasticsearch :uri)))
   ([conn-string] (esr/connect conn-string)))
 
 (defn prepare-response [id doc]

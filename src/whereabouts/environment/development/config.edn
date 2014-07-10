@@ -1,0 +1,2 @@
+{:server        {:port 3000}
+ :elasticsearch {:uri "http://127.0.0.1:9200"}}

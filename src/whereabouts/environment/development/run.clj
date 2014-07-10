@@ -1,4 +1,4 @@
-(ns whereabouts.environment.development
+(ns whereabouts.environment.development.run
   (:require [whereabouts.core :as core]
             [ring.adapter.jetty         :refer [run-jetty]]
             [ring.middleware.params     :refer [wrap-params]]
@@ -11,6 +11,15 @@
       wrap-reload
       wrap-stacktrace))
 
+(def config-map
+  (read-string (slurp "src/whereabouts/environment/development/config.edn")))
+
+(defn- config-for [& k]
+  (get-in config-map k))
+
+(defn- get-port [args]
+  (Integer/parseInt (or (first args) (str (config-for :server :port)))))
+
 (defn -main [& args]
-  (let [port (Integer/parseInt (or (first args) "3000"))]
+  (let [port (get-port args)]
     (run-jetty development-handler {:port port})))
