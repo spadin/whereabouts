@@ -11,8 +11,10 @@
                  [org.clojure/tools.nrepl "0.2.3"]
                  [ring/ring-devel "1.3.0"]
                  [ring/ring-jetty-adapter "1.3.0"]]
-  :profiles {:dev {:main whereabouts.environment.development.run
-                   :dependencies [[speclj "3.0.1"]]}}
+  :min-lein-version "2.0.0"
+  :profiles {:dev  {:main whereabouts.environment.development.run
+                    :dependencies [[speclj "3.0.1"]]}
+             :prod {:main whereabouts.environment.production.run}}
   :plugins [[speclj "3.0.1"]
             [lein-ring "0.8.10"]]
   :test-paths ["spec"])
