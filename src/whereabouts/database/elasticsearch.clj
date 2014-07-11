@@ -1,12 +1,7 @@
 (ns whereabouts.database.elasticsearch
   (:require [clojurewerkz.elastisch.rest          :as esr]
-            [clojurewerkz.elastisch.rest.document :as esd]))
-
-(def config-map
-  (read-string (slurp "src/whereabouts/environment/development/config.edn")))
-
-(defn- config-for [& k]
-  (get-in config-map k))
+            [clojurewerkz.elastisch.rest.document :as esd]
+            [whereabouts.config :refer [config-for]]))
 
 (defn connect
   ([] (connect (config-for :elasticsearch :uri)))
