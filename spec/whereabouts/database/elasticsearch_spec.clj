@@ -1,12 +1,18 @@
 (ns whereabouts.database.elasticsearch-spec
   (:require [speclj.core                        :refer :all]
             [whereabouts.database.elasticsearch :refer :all]
+            [whereabouts.config                   :as config]
             [clojurewerkz.elastisch.rest          :as esr]
             [clojurewerkz.elastisch.rest.document :as esd]))
 
 (describe "whereabouts.db"
   (with mock-connect (fn [conn-string] conn-string))
   (with mock-put (fn [conn index type id doc] {:index index}))
+  (with mock-config {:elasticsearch {:uri "http://127.0.0.1:9200"}})
+
+  (around [it]
+    (with-redefs [config/*config* (atom @mock-config)]
+      (it)))
 
   (context "#connect"
     (it "returns a db connection"

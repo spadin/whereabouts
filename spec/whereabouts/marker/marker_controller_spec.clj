@@ -4,7 +4,8 @@
             [cheshire.core           :refer [generate-string]]
             [clojure.java.io         :refer [input-stream]]
             [whereabouts.spec-helper :refer [parse-body delete-index]]
-            [whereabouts.marker.marker-controller :refer :all]))
+            [whereabouts.marker.marker-controller :refer :all]
+            [whereabouts.config :as config]))
 
 (describe "whereabouts.location.location-controller"
   (defn generate-request [str]
@@ -14,6 +15,11 @@
   (with id "id")
   (with marker-data {:id @id :location @location})
   (with marker-data-request (generate-request (generate-string @marker-data)))
+  (with mock-config {:elasticsearch {:uri "http://127.0.0.1:9200"}})
+
+  (around [it]
+    (with-redefs [config/*config* (atom @mock-config)]
+      (it)))
 
   (around [it]
     (it)
