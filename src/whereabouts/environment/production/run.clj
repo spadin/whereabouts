@@ -6,7 +6,7 @@
             [ring.middleware.reload     :refer [wrap-reload]]
             [ring.middleware.stacktrace :refer [wrap-stacktrace]]))
 
-(def development-handler
+(def production-handler
   (-> core/handler
       wrap-params
       wrap-reload
@@ -21,4 +21,4 @@
 (defn -main [& args]
   (set-env! :production)
   (let [port (get-port args)]
-    (run-jetty development-handler {:port port})))
+    (run-jetty production-handler {:port port})))
