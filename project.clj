@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[cheshire "5.3.1"]
-                 [clojurewerkz/elastisch "2.0.0-rc1"]
+                 [clojurewerkz/elastisch "2.1.0-beta5"]
                  [compojure "1.1.8"]
                  [http-kit "2.1.16"]
                  [org.clojure/clojure "1.5.1"]

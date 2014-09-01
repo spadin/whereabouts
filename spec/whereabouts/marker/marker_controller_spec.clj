@@ -25,7 +25,7 @@
     (it)
     (delete-index "whereabouts_dev"))
 
-  (context "#set-marker"
+  (context "/set-marker"
     (it "returns the marker data"
       (should= @marker-data
                (set-marker @marker-data-request)))

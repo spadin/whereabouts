@@ -14,7 +14,7 @@
     (with-redefs [config/*config* (atom @mock-config)]
       (it)))
 
-  (context "#connect"
+  (context "/connect"
     (it "returns a db connection"
       (should= clojurewerkz.elastisch.rest.Connection
                (type (connect))))
@@ -29,7 +29,7 @@
         (should= "http://127.0.0.1:9200"
                  (connect)))))
 
-  (context "#set-doc"
+  (context "/set-doc"
     (with-stubs)
 
     (context "no default arguments"
@@ -49,7 +49,7 @@
           (should-invoke connect {:times 1}
                          (set-doc "type" "id" {:content 1}))))))
 
-  (context "#get-doc"
+  (context "/get-doc"
     (with-stubs)
 
     (context "no default arguments"
