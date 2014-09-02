@@ -1,6 +1,7 @@
 (ns whereabouts.environment.production.run
-  (:require [whereabouts.core :as core]
-            [whereabouts.config         :refer [config-for set-env!]]
+  (:require [whereabouts.core   :as core]
+            [whereabouts.server :as server]
+            [whereabouts.config         :refer [set-env!]]
             [ring.adapter.jetty         :refer [run-jetty]]
             [ring.middleware.params     :refer [wrap-params]]
             [ring.middleware.reload     :refer [wrap-reload]]
@@ -14,7 +15,7 @@
 
 (defn- get-port [args]
   (let [command-line-port (first args)
-        default-port      (config-for :server :port)
+        default-port      @server/default-port
         port-str          (str (or command-line-port default-port))]
     (Integer/parseInt port-str)))
 
