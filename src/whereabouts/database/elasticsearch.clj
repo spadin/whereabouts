@@ -1,6 +1,7 @@
 (ns whereabouts.database.elasticsearch
   (:require [clojurewerkz.elastisch.rest          :as esr]
-            [clojurewerkz.elastisch.rest.document :as esd]))
+            [clojurewerkz.elastisch.rest.document :as esd]
+            [clojurewerkz.elastisch.rest.index    :as esi]))
 
 (def uri   (atom nil))
 (def index (atom nil))
@@ -16,20 +17,10 @@
 (defn prepare-response [id doc]
   (assoc doc :id id))
 
-(defn get-doc
-  ([conn index type id]
-   (let [resp (esd/get conn index type id)]
+(defn get-doc [type id]
+   (let [resp (esd/get (connect) @index type id)]
      (prepare-response id (:_source resp))))
-  ([conn type id]
-   (get-doc conn @index type id))
-  ([type id]
-   (get-doc (connect) type id)))
 
-(defn set-doc
-  ([conn index type id doc]
-   (esd/put conn index type id doc)
-   (prepare-response id doc))
-  ([conn type id doc]
-   (set-doc conn @index type id doc))
-  ([type id doc]
-   (set-doc (connect) type id doc)))
+(defn set-doc [type id doc]
+  (esd/put (connect) @index type id doc)
+  (prepare-response id doc))
