@@ -1,4 +1,5 @@
-(ns whereabouts.config)
+(ns whereabouts.config
+  (:require [whereabouts.database.elasticsearch :as elasticsearch]))
 
 (def ^:dynamic *env*    (atom nil))
 (def ^:dynamic *config* (atom {}))
@@ -17,4 +18,5 @@
 
 (defn set-env! [new-env]
   (reset! *env* new-env)
-  (load-config!))
+  (load-config!)
+  (elasticsearch/setup! (:elasticsearch @*config*)))

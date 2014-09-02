@@ -5,9 +5,9 @@
             [clojure.java.io         :refer [input-stream]]
             [whereabouts.spec-helper :refer [parse-body delete-index]]
             [whereabouts.marker.marker-controller :refer :all]
-            [whereabouts.config :as config]))
+            [whereabouts.database.elasticsearch :as elasticsearch]))
 
-(describe "whereabouts.location.location-controller"
+(describe "whereabouts.marker.marker-controller"
   (defn generate-request [str]
     (BufferedReader. (StringReader. str)))
 
@@ -15,11 +15,12 @@
   (with id "id")
   (with marker-data {:id @id :location @location})
   (with marker-data-request (generate-request (generate-string @marker-data)))
-  (with mock-config {:elasticsearch {:uri "http://127.0.0.1:9200"}})
+  (with mock-config {:uri "http://127.0.0.1:9200"
+                     :index "whereabouts-test"})
 
   (around [it]
-    (with-redefs [config/*config* (atom @mock-config)]
-      (it)))
+    (elasticsearch/setup! @mock-config)
+    (it))
 
   (around [it]
     (it)
