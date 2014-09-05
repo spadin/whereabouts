@@ -3,15 +3,11 @@
             [whereabouts.server :as server]
             [whereabouts.config         :refer [set-env!]]
             [ring.adapter.jetty         :refer [run-jetty]]
-            [ring.middleware.params     :refer [wrap-params]]
-            [ring.middleware.reload     :refer [wrap-reload]]
-            [ring.middleware.stacktrace :refer [wrap-stacktrace]]))
+            [ring.middleware.params     :refer [wrap-params]]))
 
 (def production-handler
   (-> core/handler
-      wrap-params
-      wrap-reload
-      wrap-stacktrace))
+      wrap-params))
 
 (defn- get-port [args]
   (let [command-line-port (first args)
