@@ -1,6 +1,5 @@
 (ns whereabouts.environment.development.run
-  (:require [whereabouts.core   :as core]
-            [whereabouts.server :as server]
+  (:require [whereabouts.server :as server]
             [whereabouts.config         :refer [set-env!]]
             [ring.adapter.jetty         :refer [run-jetty]]
             [ring.middleware.params     :refer [wrap-params]]
@@ -8,18 +7,12 @@
             [ring.middleware.stacktrace :refer [wrap-stacktrace]]))
 
 (def development-handler
-  (-> core/handler
+  (-> server/handler
       wrap-params
       wrap-reload
       wrap-stacktrace))
 
-(defn- get-port [args]
-  (let [command-line-port (first args)
-        default-port      @server/default-port
-        port-str          (str (or command-line-port default-port))]
-    (Integer/parseInt port-str)))
-
 (defn -main [& args]
   (set-env! :development)
-  (let [port (get-port args)]
+  (let [port (server/get-port (first args))]
     (run-jetty development-handler {:port port})))
