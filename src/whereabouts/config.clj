@@ -1,6 +1,4 @@
-(ns whereabouts.config
-  (:require [whereabouts.server                 :as server])
-  (:require [whereabouts.database.elasticsearch :as elasticsearch]))
+(ns whereabouts.config)
 
 (defn eval-file [f]
   (read-string (slurp f)))
@@ -8,7 +6,9 @@
 (defn load-config-map [env]
   (eval-file (str "src/whereabouts/environment/" (name env) "/config.edn")))
 
+(defn run-configs [configs]
+  (doseq [[setup-fn config] configs]
+    ((resolve setup-fn) config)))
+
 (defn set-env! [env]
-  (let [config (load-config-map env)]
-    (server/setup! (:server config))
-    (elasticsearch/setup! (:elasticsearch config))))
+  (run-configs (load-config-map env)))
