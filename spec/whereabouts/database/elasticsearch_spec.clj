@@ -9,7 +9,7 @@
   (with mock-connect (fn [uri] uri))
   (with mock-put (fn [conn index type id doc] {:index index}))
   (with mock-config {:uri "http://127.0.0.1:9200"
-                     :index "test"})
+                     :index "whereabouts-test"})
 
   (around [it]
     (setup! @mock-config)
@@ -36,7 +36,7 @@
                (type (set-doc "type" "id" {:content 1}))))
 
     (it "defaults index to index in config"
-      (should-invoke esd/put {:with [:* "test" "type" "id" {:content 1}]}
+      (should-invoke esd/put {:with [:* "whereabouts-test" "type" "id" {:content 1}]}
                      (set-doc "type" "id" {:content 1})))
 
     (it "defaults connection to connect function"
@@ -53,7 +53,7 @@
 
     (context "with default index"
       (it "defaults index to index in config"
-        (should-invoke esd/get {:with [:* "test" "type" "id"]}
+        (should-invoke esd/get {:with [:* "whereabouts-test" "type" "id"]}
                        (get-doc "type" "id"))))
 
     (context "with default connection and index"
