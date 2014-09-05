@@ -1,11 +1,9 @@
 (ns whereabouts.database.elasticsearch-setup-spec
   (:require [speclj.core                              :refer :all]
             [whereabouts.config                       :refer [set-env!]]
-            [whereabouts.database.elasticsearch       :refer :all]
+            [whereabouts.database.elasticsearch       :refer [connect index setup!]]
             [whereabouts.database.elasticsearch-setup :refer :all]
-            [clojurewerkz.elastisch.rest          :as esr]
-            [clojurewerkz.elastisch.rest.document :as esd]
-            [clojurewerkz.elastisch.rest.index    :as esi]))
+            [clojurewerkz.elastisch.rest.index        :as esi]))
 
 (describe "whereabouts.database.elasticsearch-setup"
   (with mock-config {:uri "http://127.0.0.1:9200"
@@ -13,10 +11,9 @@
 
   (around [it]
     (with-redefs [set-env! (constantly nil)]
-      (let [connection (connect)]
-        (setup! @mock-config)
-        (esi/delete connection @index)
-        (it))))
+      (setup! @mock-config)
+      (esi/delete (connect) @index)
+      (it)))
 
   (context "indexes"
     (context "/create-index-on-env"
