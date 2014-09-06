@@ -3,7 +3,7 @@
   (:require [speclj.core             :refer :all]
             [cheshire.core           :refer [generate-string]]
             [clojure.java.io         :refer [input-stream]]
-            [whereabouts.spec-helper :refer [parse-body delete-index]]
+            [whereabouts.spec-helper :refer [parse-body]]
             [whereabouts.marker.marker-controller :refer :all]
             [whereabouts.database.elasticsearch :as elasticsearch]))
 
@@ -21,10 +21,6 @@
   (around [it]
     (elasticsearch/setup! @mock-config)
     (it))
-
-  (around [it]
-    (it)
-    (delete-index "whereabouts_dev"))
 
   (context "/set-marker"
     (it "returns the marker data"

@@ -5,7 +5,3 @@
 
 (defn parse-body [response]
   (parse-string (:body response) true))
-
-(defn delete-index [index]
-  (let [conn (es/connect)]
-    (esi/delete conn "whereabouts_dev")))
