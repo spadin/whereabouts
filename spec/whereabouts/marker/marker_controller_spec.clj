@@ -14,6 +14,14 @@
   (defn- route [path]
     (str "/" path))
 
+  (defn- post-request [path body]
+    (-> (request :post path)
+        (content-type "application/json")
+        (merge {:body body})))
+
+  (defn- get-request [path]
+    (request :get path))
+
   (around [it]
     (elasticsearch/setup! @mock-config)
     (it))
@@ -26,7 +34,7 @@
     (it "sets the marker data to elasticsearch"
       (set-marker @id @marker)
       (should= @expected-response
-               (elasticsearch/get-doc "marker" @id))))
+               (elasticsearch/get-doc :marker @id))))
 
   (context "/get-marker"
     (it "returns the marker from elasticsearch"
@@ -39,12 +47,10 @@
       (it "returns the marker with id"
         (set-marker @id @marker)
         (should= @expected-response
-                 (:body (marker-handler (request :get (route @id)))))))
+                 (:body (marker-handler (get-request (route @id)))))))
 
     (context "POST /:id"
       (it "returns the marker with id"
-        (let [request (-> (request :post (route @id))
-                          (content-type "application/json")
-                          (merge {:body @marker}))]
+        (let [request (post-request (route @id) @marker)]
           (should= @expected-response
                    (:body (marker-handler request))))))))
