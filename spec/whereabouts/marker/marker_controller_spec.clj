@@ -40,7 +40,7 @@
     (it "returns the marker from elasticsearch"
       (set-marker @id @marker)
       (should= @expected-response
-               (find-marker @id))))
+               (get-marker @id))))
 
   (context "routes"
     (context "GET /:id"

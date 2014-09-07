@@ -3,12 +3,12 @@
             [ring.util.response :refer [response]]
             [whereabouts.database.elasticsearch :as elasticsearch]))
 
-(defn find-marker [id]
+(defn get-marker [id]
   (elasticsearch/get-doc :marker id))
 
 (defn set-marker [id marker]
   (elasticsearch/set-doc :marker id marker))
 
 (defroutes marker-handler
-  (GET  "/:id" [id]                  (response (find-marker id)))
+  (GET  "/:id" [id]                  (response (get-marker id)))
   (POST "/:id" [id :as {body :body}] (response (set-marker id body))))
