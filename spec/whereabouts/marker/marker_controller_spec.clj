@@ -42,6 +42,13 @@
       (should= @expected-response
                (get-marker @id))))
 
+  (context "/search"
+    (with search-params {:top_left {:lat 10 :lon 10} :bottom_right {:lat 0 :lon 0}})
+
+    (it "returns an empty list when no markers are found in the area"
+      (should= []
+               (search @search-params))))
+
   (context "routes"
     (context "GET /:id"
       (it "returns the marker with id"

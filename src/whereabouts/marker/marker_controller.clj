@@ -9,6 +9,10 @@
 (defn set-marker [id marker]
   (elasticsearch/set-doc :marker id marker))
 
+(defn search [{top-left     :top_left
+               bottom-right :bottom_right}]
+  [])
+
 (defroutes marker-handler
   (GET  "/:id" [id]                  (response (get-marker id)))
   (POST "/:id" [id :as {body :body}] (response (set-marker id body))))
