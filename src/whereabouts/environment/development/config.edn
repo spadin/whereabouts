@@ -1,3 +1,4 @@
 {whereabouts.server/setup!                 {:default-port 3000}
  whereabouts.database.elasticsearch/setup! {:uri "http://127.0.0.1:9200"
-                                            :index "whereabouts-dev"}}
+                                             :index "whereabouts-dev"
+                                             :mappings {"marker" {:properties {:location {:type "geo_point"}}}}}}

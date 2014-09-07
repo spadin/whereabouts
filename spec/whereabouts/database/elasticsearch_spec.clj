@@ -71,4 +71,9 @@
     (it "sets the index"
       (setup! {:index "test-index"})
       (should= "test-index"
-               @index))))
+               @index))
+
+    (it "sets the mappings"
+      (setup! {:mappings "test-mappings"})
+      (should= "test-mappings"
+               @mappings))))

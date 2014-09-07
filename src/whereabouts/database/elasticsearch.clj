@@ -3,12 +3,14 @@
             [clojurewerkz.elastisch.rest.document :as esd]
             [clojurewerkz.elastisch.rest.index    :as esi]))
 
-(def uri   (atom nil))
-(def index (atom nil))
+(def uri      (atom nil))
+(def index    (atom nil))
+(def mappings (atom nil))
 
 (defn setup! [config]
-  (reset! uri   (:uri   config))
-  (reset! index (:index config)))
+  (reset! uri      (:uri      config))
+  (reset! index    (:index    config))
+  (reset! mappings (:mappings config)))
 
 (defn connect
   ([]    (connect @uri))

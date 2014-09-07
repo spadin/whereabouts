@@ -34,7 +34,7 @@
     (it "sets the marker data to elasticsearch"
       (set-marker @id @marker)
       (should= @expected-response
-               (elasticsearch/get-doc :marker @id))))
+               (elasticsearch/get-doc "marker" @id))))
 
   (context "/get-marker"
     (it "returns the marker from elasticsearch"

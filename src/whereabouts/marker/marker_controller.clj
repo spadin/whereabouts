@@ -4,10 +4,10 @@
             [whereabouts.database.elasticsearch :as elasticsearch]))
 
 (defn get-marker [id]
-  (elasticsearch/get-doc :marker id))
+  (elasticsearch/get-doc "marker" id))
 
 (defn set-marker [id marker]
-  (elasticsearch/set-doc :marker id marker))
+  (elasticsearch/set-doc "marker" id marker))
 
 (defn search [{top-left     :top_left
                bottom-right :bottom_right}]
