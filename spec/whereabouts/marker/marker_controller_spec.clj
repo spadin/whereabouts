@@ -1,33 +1,50 @@
 (ns whereabouts.marker.marker-controller-spec
-  (:import (java.io BufferedReader StringReader))
-  (:require [speclj.core             :refer :all]
-            [cheshire.core           :refer [generate-string]]
-            [clojure.java.io         :refer [input-stream]]
-            [whereabouts.spec-helper :refer [parse-body]]
+  (:require [speclj.core                          :refer :all]
             [whereabouts.marker.marker-controller :refer :all]
+            [ring.mock.request                    :refer [request content-type]]
             [whereabouts.database.elasticsearch :as elasticsearch]))
 
 (describe "whereabouts.marker.marker-controller"
-  (defn generate-request [str]
-    (BufferedReader. (StringReader. str)))
-
-  (with location {:lat 1 :lon 1})
   (with id "id")
-  (with marker-data {:id @id :location @location})
-  (with marker-data-request (generate-request (generate-string @marker-data)))
+  (with marker {:location {:lat 1 :lon 1}})
+  (with expected-response (merge {:id @id} @marker))
   (with mock-config {:uri "http://127.0.0.1:9200"
                      :index "whereabouts-test"})
+
+  (defn- route [path]
+    (str "/" path))
 
   (around [it]
     (elasticsearch/setup! @mock-config)
     (it))
 
   (context "/set-marker"
-    (it "returns the marker data"
-      (should= @marker-data
-               (set-marker @marker-data-request)))
+    (it "returns the marker data with id"
+      (should= @expected-response
+               (set-marker @id @marker)))
 
-    (it "sets the marker data to elastic search"
-      (set-marker @marker-data-request)
-      (should= @marker-data
-               (find-marker @id)))))
+    (it "sets the marker data to elasticsearch"
+      (set-marker @id @marker)
+      (should= @expected-response
+               (elasticsearch/get-doc "marker" @id))))
+
+  (context "/get-marker"
+    (it "returns the marker from elasticsearch"
+      (set-marker @id @marker)
+      (should= @expected-response
+               (find-marker @id))))
+
+  (context "routes"
+    (context "GET /:id"
+      (it "returns the marker with id"
+        (set-marker @id @marker)
+        (should= @expected-response
+                 (:body (marker-handler (request :get (route @id)))))))
+
+    (context "POST /:id"
+      (it "returns the marker with id"
+        (let [request (-> (request :post (route @id))
+                          (content-type "application/json")
+                          (merge {:body @marker}))]
+          (should= @expected-response
+                   (:body (marker-handler request))))))))

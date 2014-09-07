@@ -1,6 +1,6 @@
 (ns whereabouts.server
   (:require [compojure.core                       :refer [context defroutes GET]]
-            [whereabouts.marker.marker-controller :refer [marker-routes]]))
+            [whereabouts.marker.marker-controller :refer [marker-handler]]))
 
 (def default-port (atom nil))
 
@@ -13,5 +13,5 @@
       (Integer/parseInt port-str))))
 
 (defroutes handler
-  (context "/marker" [] marker-routes)
+  (context "/marker" [] marker-handler)
   (GET "/" [] ""))

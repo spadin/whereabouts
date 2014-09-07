@@ -1,26 +1,14 @@
 (ns whereabouts.marker.marker-controller
-  (:require [compojure.core :refer [defroutes GET POST]]
-            [cheshire.core  :refer [generate-string parse-string]]
-            [whereabouts.database.elasticsearch :as es]))
+  (:require [compojure.core     :refer [defroutes GET POST]]
+            [ring.util.response :refer [response]]
+            [whereabouts.database.elasticsearch :as elasticsearch]))
 
 (defn find-marker [id]
-  (es/get-doc "marker" id))
+  (elasticsearch/get-doc "marker" id))
 
-(defn set-marker [body]
-  (let [marker (parse-string (slurp body) true)
-        id     (:id marker)
-        doc    (dissoc marker :id)]
-    (es/set-doc "marker" id doc)))
+(defn set-marker [id marker]
+  (elasticsearch/set-doc "marker" id marker))
 
-(defn render-json [obj]
-  {:status  200
-   :headers {"Content-type" "application/json"}
-   :body    (generate-string obj)})
-
-(defn parse-int [string]
-  (Integer/parseInt string))
-
-(defroutes marker-routes
-  (GET  "/:id" [id] (render-json (find-marker id)))
-  (POST "/"    {:keys [body]}   (render-json (set-marker body)))
-  (GET  "/"    {:keys [params]} (render-json {:hello :world})))
+(defroutes marker-handler
+  (GET  "/:id" [id]                  (response (find-marker id)))
+  (POST "/:id" [id :as {body :body}] (response (set-marker id body))))

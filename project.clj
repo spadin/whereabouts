@@ -9,10 +9,12 @@
                  [http-kit "2.1.16"]
                  [org.clojure/clojure "1.5.1"]
                  [org.clojure/tools.nrepl "0.2.3"]
-                 [ring/ring-jetty-adapter "1.3.0"]]
+                 [ring/ring-jetty-adapter "1.3.0"]
+                 [ring/ring-json "0.3.1"]]
   :min-lein-version "2.0.0"
   :profiles {:dev  {:main whereabouts.environment.development.run
                     :dependencies [[ring/ring-devel "1.3.0"]
+                                   [ring-mock "0.1.5"]
                                    [speclj "3.0.1"]]
                     :aliases {"create-index" ["do" ["create-index-on-env" :development]]
                               "delete-index" ["do" ["delete-index-on-env" :development]]}}
