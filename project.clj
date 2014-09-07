@@ -1,12 +1,10 @@
 (defproject whereabouts "0.1.0-SNAPSHOT"
-  :description "location service"
+  :description "location service with simple api"
   :url "http://github.com/spadin/whereabouts"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[cheshire "5.3.1"]
-                 [clojurewerkz/elastisch "2.1.0-beta5"]
+  :dependencies [[clojurewerkz/elastisch "2.1.0-beta5"]
                  [compojure "1.1.8"]
-                 [http-kit "2.1.16"]
                  [org.clojure/clojure "1.5.1"]
                  [org.clojure/tools.nrepl "0.2.3"]
                  [ring/ring-jetty-adapter "1.3.0"]
