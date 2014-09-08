@@ -1,5 +1,6 @@
 (ns whereabouts.database.elasticsearch-spec
   (:require [speclj.core                        :refer :all]
+            [whereabouts.spec-helper            :refer :all]
             [whereabouts.database.elasticsearch :refer :all]
             [clojurewerkz.elastisch.rest          :as esr]
             [clojurewerkz.elastisch.rest.document :as esd]
@@ -8,11 +9,9 @@
 (describe "whereabouts.database.elasticsearch"
   (with mock-connect (fn [uri] uri))
   (with mock-put (fn [conn index type id doc] {:index index}))
-  (with mock-config {:uri "http://127.0.0.1:9200"
-                     :index "whereabouts-test"})
 
   (around [it]
-    (setup! @mock-config)
+    (elasticsearch-setup)
     (it))
 
   (context "/connect"
@@ -61,6 +60,25 @@
         (with-redefs [esd/get (fn [conn index type id] {:index index})]
           (should-invoke connect {:times 1}
                          (get-doc "type" "id"))))))
+
+  (context "/search-location"
+    (with id "id")
+    (with marker {:location {:lat 5 :lon 5}})
+    (with expected-response (merge {:id @id} @marker))
+    (with bounding-box {:top_left {:lat 10 :lon 0} :bottom_right {:lat 0 :lon 10}})
+
+    (around [it]
+      (elasticsearch-create-index)
+      (it))
+
+    (it "returns an empty list when nothing found"
+      (should-be empty? (search-location "marker" @bounding-box)))
+
+    (it "returns list with match when found"
+      (set-doc "marker" @id @marker)
+      (elasticsearch-flush)
+      (should= [@expected-response]
+               (search-location "marker" @bounding-box))))
 
   (context "/setup!"
     (it "sets the uri"

@@ -9,9 +9,8 @@
 (defn set-marker [id marker]
   (elasticsearch/set-doc "marker" id marker))
 
-(defn search [{top-left     :top_left
-               bottom-right :bottom_right}]
-  [])
+(defn search [bounding-box]
+  (elasticsearch/search-location "marker" bounding-box))
 
 (defroutes marker-handler
   (GET  "/:id" [id]                  (response (get-marker id)))

@@ -1,15 +1,13 @@
 (ns whereabouts.marker.marker-controller-spec
   (:require [speclj.core                          :refer :all]
             [whereabouts.marker.marker-controller :refer :all]
-            [ring.mock.request                    :refer [request content-type]]
-            [whereabouts.database.elasticsearch :as elasticsearch]))
+            [whereabouts.spec-helper              :refer :all]
+            [ring.mock.request                    :refer [request content-type]]))
 
 (describe "whereabouts.marker.marker-controller"
   (with id "id")
-  (with marker {:location {:lat 1 :lon 1}})
+  (with marker {:location {:lat 5 :lon 5}})
   (with expected-response (merge {:id @id} @marker))
-  (with mock-config {:uri "http://127.0.0.1:9200"
-                     :index "whereabouts-test"})
 
   (defn- route [path]
     (str "/" path))
@@ -23,18 +21,13 @@
     (request :get (route path)))
 
   (around [it]
-    (elasticsearch/setup! @mock-config)
+    (elasticsearch-setup)
     (it))
 
   (context "/set-marker"
     (it "returns the marker data with id"
       (should= @expected-response
-               (set-marker @id @marker)))
-
-    (it "sets the marker data to elasticsearch"
-      (set-marker @id @marker)
-      (should= @expected-response
-               (elasticsearch/get-doc "marker" @id))))
+               (set-marker @id @marker))))
 
   (context "/get-marker"
     (it "returns the marker from elasticsearch"
@@ -43,11 +36,20 @@
                (get-marker @id))))
 
   (context "/search"
-    (with search-params {:top_left {:lat 10 :lon 10} :bottom_right {:lat 0 :lon 0}})
+    (with bounding-box {:top_left {:lat 10 :lon 0} :bottom_right {:lat 0 :lon 10}})
+
+    (around [it]
+      (elasticsearch-create-index)
+      (it))
 
     (it "returns an empty list when no markers are found in the area"
-      (should= []
-               (search @search-params))))
+      (should-be empty? (search @bounding-box)))
+
+    (it "returns a list with the marker"
+      (set-marker @id @marker)
+      (elasticsearch-flush)
+      (should= [@expected-response]
+               (search @bounding-box))))
 
   (context "routes"
     (context "GET /:id"
