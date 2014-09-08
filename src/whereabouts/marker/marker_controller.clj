@@ -13,5 +13,6 @@
   (elasticsearch/search-location "marker" bounding-box))
 
 (defroutes marker-handler
-  (GET  "/:id" [id]                  (response (get-marker id)))
-  (POST "/:id" [id :as {body :body}] (response (set-marker id body))))
+  (POST "/search-location" [:as {body :body}] (response (search body)))
+  (GET  "/:id"   [id]                    (response (get-marker id)))
+  (POST "/:id"   [id :as {body :body}]   (response (set-marker id body))))

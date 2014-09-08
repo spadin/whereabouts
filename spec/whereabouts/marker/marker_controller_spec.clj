@@ -2,11 +2,12 @@
   (:require [speclj.core                          :refer :all]
             [whereabouts.marker.marker-controller :refer :all]
             [whereabouts.spec-helper              :refer :all]
-            [ring.mock.request                    :refer [request content-type]]))
+            [ring.mock.request                    :refer [request content-type body]]))
 
 (describe "whereabouts.marker.marker-controller"
   (with id "id")
   (with marker {:location {:lat 5 :lon 5}})
+  (with bounding-box {:top_left {:lat 10 :lon 0} :bottom_right {:lat 0 :lon 10}})
   (with expected-response (merge {:id @id} @marker))
 
   (defn- route [path]
@@ -22,6 +23,7 @@
 
   (around [it]
     (elasticsearch-setup)
+    (elasticsearch-create-index)
     (it))
 
   (context "/set-marker"
@@ -36,12 +38,6 @@
                (get-marker @id))))
 
   (context "/search"
-    (with bounding-box {:top_left {:lat 10 :lon 0} :bottom_right {:lat 0 :lon 10}})
-
-    (around [it]
-      (elasticsearch-create-index)
-      (it))
-
     (it "returns an empty list when no markers are found in the area"
       (should-be empty? (search @bounding-box)))
 
@@ -62,4 +58,12 @@
       (it "returns the marker with id"
         (let [request (post-request @id @marker)]
           (should= @expected-response
+                   (:body (marker-handler request))))))
+
+    (context "POST /search-location"
+      (it "returns the search results"
+        (set-marker @id @marker)
+        (elasticsearch-flush)
+        (let [request (post-request "search-location" @bounding-box)]
+          (should= [@expected-response]
                    (:body (marker-handler request))))))))
