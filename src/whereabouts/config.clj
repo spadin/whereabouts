@@ -1,11 +1,15 @@
 (ns whereabouts.config
-  (:require [clojure.string :as string]))
+  (:require [clojure.string  :as string]
+            [clojure.java.io :refer [resource]]))
 
 (defn eval-file [f]
-  (read-string (slurp f)))
+  (read-string (slurp (resource f))))
+
+(defn config-path [env]
+  (str "whereabouts/environment/" (name env) "/config.edn"))
 
 (defn load-config-map [env]
-  (eval-file (str "src/whereabouts/environment/" (name env) "/config.edn")))
+  (eval-file (config-path env)))
 
 (defn run-configs [configs]
   (doseq [[setup config] configs]
