@@ -21,6 +21,16 @@
   (defn- get-request [path]
     (request :get (route path)))
 
+  (defn- get-request-with-params [path params]
+    (-> (request :get (route path))
+        (merge {:params params})))
+
+  (defn- query-string-bounding-box [bounding-box]
+    {:top_left_lat     (str (get-in bounding-box [:top_left :lat]))
+     :top_left_lon     (str (get-in bounding-box [:top_left :lon]))
+     :bottom_right_lat (str (get-in bounding-box [:bottom_right :lat]))
+     :bottom_right_lon (str (get-in bounding-box [:bottom_right :lon]))})
+
   (around [it]
     (elasticsearch-setup)
     (elasticsearch-create-index)
@@ -39,6 +49,7 @@
 
   (context "/search"
     (it "returns an empty list when no markers are found in the area"
+      (elasticsearch-flush)
       (should-be empty? (search @bounding-box)))
 
     (it "returns a list with the marker"
@@ -65,5 +76,13 @@
         (set-marker @id @marker)
         (elasticsearch-flush)
         (let [request (post-request "search-location" @bounding-box)]
+          (should= [@expected-response]
+                   (:body (marker-handler request))))))
+
+    (context "GET /search-location"
+      (it "returns the search results"
+        (set-marker @id @marker)
+        (elasticsearch-flush)
+        (let [request (get-request-with-params "search-location" (query-string-bounding-box @bounding-box))]
           (should= [@expected-response]
                    (:body (marker-handler request))))))))

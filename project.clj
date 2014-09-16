@@ -18,7 +18,9 @@
                               "delete-index" ["do" ["delete-index-on-env" :development]]}}
              :prod {:main whereabouts.environment.production.run
                     :aliases {"create-index" ["do" ["create-index-on-env" :production]]
-                              "delete-index" ["do" ["delete-index-on-env" :production]]}}}
+                              "delete-index" ["do" ["delete-index-on-env" :production]]}}
+             :test {:aliases {"create-index" ["do" ["create-index-on-env" :test]]
+                              "delete-index" ["do" ["delete-index-on-env" :test]]}}}
   :aliases {"create-index-on-env" ["run" "-m" "whereabouts.database.elasticsearch-setup/create-index-on-env"]
             "delete-index-on-env" ["run" "-m" "whereabouts.database.elasticsearch-setup/delete-index-on-env"]}
   :plugins [[speclj "3.0.1"]
