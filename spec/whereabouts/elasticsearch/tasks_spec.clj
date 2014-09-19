@@ -1,8 +1,8 @@
-(ns whereabouts.elasticsearch.elasticsearch-setup-spec
-  (:require [speclj.core                              :refer :all]
-            [whereabouts.spec-helper                  :refer :all]
-            [whereabouts.elasticsearch.elasticsearch-setup :refer :all]
-            [whereabouts.config                       :refer [set-env!]]))
+(ns whereabouts.elasticsearch.tasks-spec
+  (:require [speclj.core                     :refer :all]
+            [whereabouts.spec-helper         :refer :all]
+            [whereabouts.elasticsearch.tasks :refer :all]
+            [whereabouts.config              :refer [set-env!]]))
 
 (describe "whereabouts.elasticsearch.elasticsearch-setup"
   (around [it]

@@ -1,7 +1,7 @@
-(ns whereabouts.elasticsearch.elasticsearch-setup
-  (:require [clojurewerkz.elastisch.rest.index  :as esi]
-            [whereabouts.elasticsearch.core :refer [index connect mappings]]
-            [whereabouts.config                 :refer [set-env!]]))
+(ns whereabouts.elasticsearch.tasks
+  (:require [clojurewerkz.elastisch.rest.index :as esi]
+            [whereabouts.elasticsearch.core    :refer [index connect mappings]]
+            [whereabouts.config                :refer [set-env!]]))
 
 (defn create-index-on-env [env]
   (set-env! env)

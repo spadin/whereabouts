@@ -1,7 +1,7 @@
 (ns whereabouts.spec-helper
-  (:require [whereabouts.elasticsearch.core       :as elasticsearch]
-            [whereabouts.elasticsearch.elasticsearch-setup :as elasticsearch-setup]
-            [clojurewerkz.elastisch.rest.index        :as esi]))
+  (:require [whereabouts.elasticsearch.core    :as elasticsearch]
+            [whereabouts.elasticsearch.tasks   :as elasticsearch-setup]
+            [clojurewerkz.elastisch.rest.index :as esi]))
 
 (defmacro with-elasticsearch [bindings & body]
   `(let [~(first bindings)  (elasticsearch/connect)
