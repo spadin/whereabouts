@@ -1,5 +1,5 @@
 (ns whereabouts.spec-helper
-  (:require [whereabouts.elasticsearch.elasticsearch       :as elasticsearch]
+  (:require [whereabouts.elasticsearch.core       :as elasticsearch]
             [whereabouts.elasticsearch.elasticsearch-setup :as elasticsearch-setup]
             [clojurewerkz.elastisch.rest.index        :as esi]))
 

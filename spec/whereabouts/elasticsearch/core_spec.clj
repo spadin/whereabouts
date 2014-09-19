@@ -1,7 +1,7 @@
-(ns whereabouts.elasticsearch.elasticsearch-spec
-  (:require [speclj.core                        :refer :all]
-            [whereabouts.spec-helper            :refer :all]
-            [whereabouts.elasticsearch.elasticsearch :refer :all]
+(ns whereabouts.elasticsearch.core-spec
+  (:require [speclj.core                          :refer :all]
+            [whereabouts.spec-helper              :refer :all]
+            [whereabouts.elasticsearch.core       :refer :all]
             [clojurewerkz.elastisch.rest          :as esr]
             [clojurewerkz.elastisch.rest.document :as esd]
             [clojurewerkz.elastisch.rest.index    :as esi]))

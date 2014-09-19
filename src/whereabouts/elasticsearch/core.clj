@@ -1,4 +1,4 @@
-(ns whereabouts.elasticsearch.elasticsearch
+(ns whereabouts.elasticsearch.core
   (:require [clojurewerkz.elastisch.query         :as q]
             [clojurewerkz.elastisch.rest          :as es]
             [clojurewerkz.elastisch.rest.document :as esd]
