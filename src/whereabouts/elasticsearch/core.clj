@@ -14,9 +14,8 @@
   (reset! index    (:index    config))
   (reset! mappings (:mappings config)))
 
-(defn connect
-  ([]    (connect @uri))
-  ([uri] (es/connect uri)))
+(defn connect []
+  (es/connect @uri))
 
 (defn prepare-response [id doc]
   (assoc doc :id id))

@@ -19,11 +19,6 @@
       (should= clojurewerkz.elastisch.rest.Connection
                (type (connect))))
 
-    (it "calls elasticsearch connect with passed connection string"
-      (with-redefs [esr/connect @mock-connect]
-        (should= "connection-string"
-                 (connect "connection-string"))))
-
     (it "calls elasticsearch connect with http://127.0.0.1:9200"
       (with-redefs [esr/connect @mock-connect]
         (should= "http://127.0.0.1:9200"
