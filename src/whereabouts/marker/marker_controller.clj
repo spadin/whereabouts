@@ -1,7 +1,7 @@
 (ns whereabouts.marker.marker-controller
   (:require [compojure.core     :refer [defroutes GET POST]]
             [ring.util.response :refer [response]]
-            [whereabouts.database.elasticsearch :as elasticsearch]))
+            [whereabouts.elasticsearch.elasticsearch :as elasticsearch]))
 
 (defn get-marker [id]
   (elasticsearch/get-doc "marker" id))

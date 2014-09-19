@@ -1,12 +1,12 @@
-(ns whereabouts.database.elasticsearch-spec
+(ns whereabouts.elasticsearch.elasticsearch-spec
   (:require [speclj.core                        :refer :all]
             [whereabouts.spec-helper            :refer :all]
-            [whereabouts.database.elasticsearch :refer :all]
+            [whereabouts.elasticsearch.elasticsearch :refer :all]
             [clojurewerkz.elastisch.rest          :as esr]
             [clojurewerkz.elastisch.rest.document :as esd]
             [clojurewerkz.elastisch.rest.index    :as esi]))
 
-(describe "whereabouts.database.elasticsearch"
+(describe "whereabouts.elasticsearch.elasticsearch"
   (with mock-connect (fn [uri] uri))
   (with mock-put (fn [conn index type id doc] {:index index}))
 

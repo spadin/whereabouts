@@ -1,6 +1,6 @@
-(ns whereabouts.database.elasticsearch-setup
+(ns whereabouts.elasticsearch.elasticsearch-setup
   (:require [clojurewerkz.elastisch.rest.index  :as esi]
-            [whereabouts.database.elasticsearch :refer [index connect mappings]]
+            [whereabouts.elasticsearch.elasticsearch :refer [index connect mappings]]
             [whereabouts.config                 :refer [set-env!]]))
 
 (defn create-index-on-env [env]

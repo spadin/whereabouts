@@ -1,10 +1,10 @@
-(ns whereabouts.database.elasticsearch-setup-spec
+(ns whereabouts.elasticsearch.elasticsearch-setup-spec
   (:require [speclj.core                              :refer :all]
             [whereabouts.spec-helper                  :refer :all]
-            [whereabouts.database.elasticsearch-setup :refer :all]
+            [whereabouts.elasticsearch.elasticsearch-setup :refer :all]
             [whereabouts.config                       :refer [set-env!]]))
 
-(describe "whereabouts.database.elasticsearch-setup"
+(describe "whereabouts.elasticsearch.elasticsearch-setup"
   (around [it]
     (with-redefs [set-env! (constantly nil)]
       (elasticsearch-setup)
