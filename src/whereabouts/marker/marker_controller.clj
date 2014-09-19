@@ -7,7 +7,7 @@
   (elasticsearch/get-doc "marker" id))
 
 (defn set-marker [id marker]
-  (elasticsearch/set-doc "marker" id marker))
+  (elasticsearch/put-doc "marker" id marker))
 
 (defn search [bounding-box]
   (elasticsearch/search-location "marker" bounding-box))

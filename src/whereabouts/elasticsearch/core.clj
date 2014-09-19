@@ -25,7 +25,7 @@
    (let [resp (esd/get (connect) @index type id)]
      (prepare-response id (:_source resp))))
 
-(defn set-doc [type id doc]
+(defn put-doc [type id doc]
   (esd/put (connect) @index type id doc)
   (prepare-response id doc))
 
