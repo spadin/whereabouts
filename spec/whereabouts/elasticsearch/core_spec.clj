@@ -31,12 +31,7 @@
 
     (it "defaults index to index in config"
       (should-invoke esd/put {:with [:* "whereabouts-test" "type" "id" {:content 1}]}
-                     (put-doc "type" "id" {:content 1})))
-
-    (it "defaults connection to connect function"
-      (with-redefs [esd/put @mock-put]
-        (should-invoke connect {:times 1}
-                       (put-doc "type" "id" {:content 1})))))
+                     (put-doc "type" "id" {:content 1}))))
 
   (context "/get-doc"
     (context "no default arguments"
@@ -48,13 +43,7 @@
     (context "with default index"
       (it "defaults index to index in config"
         (should-invoke esd/get {:with [:* "whereabouts-test" "type" "id"]}
-                       (get-doc "type" "id"))))
-
-    (context "with default connection and index"
-      (it "defaults connection to connect function"
-        (with-redefs [esd/get (fn [conn index type id] {:index index})]
-          (should-invoke connect {:times 1}
-                         (get-doc "type" "id"))))))
+                       (get-doc "type" "id")))))
 
   (context "/search-location"
     (with id "id")
@@ -74,6 +63,17 @@
       (elasticsearch-flush)
       (should= [@expected-response]
                (search-location "marker" @bounding-box))))
+
+  (context "/create-index"
+    (it "creates the elasticsearch index"
+      (create-index)
+      (should (elasticsearch-index-exists?))))
+
+  (context "/delete-index"
+    (it "deletes the elasticsearch index"
+      (create-index)
+      (delete-index)
+      (should-not (elasticsearch-index-exists?))))
 
   (context "/setup!"
     (it "sets the uri"
