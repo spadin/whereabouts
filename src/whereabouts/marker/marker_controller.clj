@@ -16,10 +16,10 @@
   (Integer/parseInt (params k)))
 
 (defn- bounding-box-from-params [params]
-  {:top_left     {:lat (int-param params :top_left_lat)
-                  :lon (int-param params :top_left_lon)}
-   :bottom_right {:lat (int-param params :bottom_right_lat)
-                  :lon (int-param params :bottom_right_lon)}})
+  {:top_right     {:lat (int-param params :top_right_lat)
+                   :lon (int-param params :top_right_lon)}
+   :bottom_left {:lat (int-param params :bottom_left_lat)
+                 :lon (int-param params :bottom_left_lon)}})
 
 (defroutes marker-handler
   (POST "/search-location" [:as {body :body}]    (response (search body)))

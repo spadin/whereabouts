@@ -7,7 +7,7 @@
 (describe "whereabouts.marker.marker-controller"
   (with id "id")
   (with marker {:location {:lat 5 :lon 5}})
-  (with bounding-box {:top_left {:lat 10 :lon 0} :bottom_right {:lat 0 :lon 10}})
+  (with bounding-box {:top_right {:lat 10 :lon 10} :bottom_left {:lat 0 :lon 0}})
   (with expected-response (merge {:id @id} @marker))
 
   (defn- route [path]
@@ -26,10 +26,10 @@
         (merge {:params params})))
 
   (defn- query-string-bounding-box [bounding-box]
-    {:top_left_lat     (str (get-in bounding-box [:top_left :lat]))
-     :top_left_lon     (str (get-in bounding-box [:top_left :lon]))
-     :bottom_right_lat (str (get-in bounding-box [:bottom_right :lat]))
-     :bottom_right_lon (str (get-in bounding-box [:bottom_right :lon]))})
+    {:top_right_lat   (str (get-in bounding-box [:top_right :lat]))
+     :top_right_lon   (str (get-in bounding-box [:top_right :lon]))
+     :bottom_left_lat (str (get-in bounding-box [:bottom_left :lat]))
+     :bottom_left_lon (str (get-in bounding-box [:bottom_left :lon]))})
 
   (around [it]
     (elasticsearch-setup)

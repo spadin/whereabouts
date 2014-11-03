@@ -49,7 +49,7 @@
     (with id "id")
     (with marker {:location {:lat 5 :lon 5}})
     (with expected-response (merge {:id @id} @marker))
-    (with bounding-box {:top_left {:lat 10 :lon 0} :bottom_right {:lat 0 :lon 10}})
+    (with bounding-box {:top_right {:lat 10 :lon 10} :bottom_left {:lat 0 :lon 0}})
 
     (around [it]
       (elasticsearch-create-index)
